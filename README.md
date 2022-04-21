@@ -1,2 +1,2 @@
 # bag
-Storage data for complex data.
+Storage object for complex data.

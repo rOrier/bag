@@ -1,0 +1,21 @@
+{
+    "name": "rorier/bag",
+    "description": "Storage object for complex data.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Raphael Aurieres",
+            "email": "raphael.aurieres@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">= 7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "ROrier\\Bag\\": "src/"
+        }
+    }
+}

@@ -1,6 +1,6 @@
 <?php
 
-namespace ROrier\Bag\Tools;
+namespace ROrier\Config\Tools;
 
 /**
  * Class CollectionTool

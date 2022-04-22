@@ -1,9 +1,9 @@
 <?php
 
-namespace ROrier\Bag\Tests\Components;
+namespace ROrier\Config\Tests\Components;
 
 use PHPUnit\Framework\TestCase;
-use ROrier\Bag\Components\Bag;
+use ROrier\Config\Components\Bag;
 
 class BagTest extends TestCase
 {

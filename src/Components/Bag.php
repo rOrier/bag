@@ -1,8 +1,8 @@
 <?php
 
-namespace ROrier\Bag\Components;
+namespace ROrier\Config\Components;
 
-use ROrier\Bag\Tools\CollectionTool;
+use ROrier\Config\Tools\CollectionTool;
 use ArrayAccess;
 use Exception;
 

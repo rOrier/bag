@@ -1,6 +1,6 @@
 {
-    "name": "rorier/bag",
-    "description": "Storage object for complex data.",
+    "name": "rorier/config",
+    "description": "Components to manage configuration.",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -18,7 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "ROrier\\Bag\\": "src/"
+            "ROrier\\Config\\": "src/"
         }
     }
 }

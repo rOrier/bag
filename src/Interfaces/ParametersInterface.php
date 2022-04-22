@@ -28,9 +28,4 @@ interface ParametersInterface extends ArrayAccess
      * @return bool
      */
     public function has($var): bool;
-
-    /**
-     * @return AnalyzerInterface
-     */
-    public function getAnalyzer(): AnalyzerInterface;
 }

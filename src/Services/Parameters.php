@@ -62,6 +62,14 @@ class Parameters implements ParametersInterface
         return isset($this->bag[$var]);
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getAnalyzer(): AnalyzerInterface
+    {
+        return $this->analyzer;
+    }
+
     // ###################################################################
     // ###       ArrayAccess interface.
     // ###################################################################

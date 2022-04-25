@@ -31,6 +31,14 @@ class Parameters implements ParametersInterface
     }
 
     /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->bag->toArray();
+    }
+
+    /**
      * @inheritDoc
      */
     public function get($var)

@@ -65,6 +65,15 @@ class ParametersProxy implements ParametersInterface
         return isset($parameters[$var]);
     }
 
+    /**
+     * @inheritDoc
+     * @throws ParametersException
+     */
+    public function toArray()
+    {
+        return $this->getParameters()->toArray();
+    }
+
     // ###################################################################
     // ###       ArrayAccess interface.
     // ###################################################################

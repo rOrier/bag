@@ -35,14 +35,16 @@ class Analyzer implements AnalyzerInterface
      * @inheritDoc
      * @throws AbstractParsingException
      */
-    public function parse(&$var)
+    public function parse($var)
     {
         if (is_string($var)) {
             $var = $this->parseString($var);
         }
 
         if (is_array($var)) {
-            array_walk($var, [$this, 'parse']);
+            array_walk($var, function(&$value) {
+                $value = $this->parse($value);
+            });
         }
 
         return $var;

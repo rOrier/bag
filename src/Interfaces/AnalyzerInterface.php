@@ -11,5 +11,5 @@ interface AnalyzerInterface
      * @return mixed
      * @throws AbstractParsingException
      */
-    public function parse(&$var);
+    public function parse($var);
 }

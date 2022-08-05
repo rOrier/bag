@@ -4,6 +4,7 @@ namespace ROrier\Config\Services\ConfigParsers;
 
 use ROrier\Config\Exceptions\Parsing\ParsingEnvException;
 use ROrier\Config\Interfaces\ParserInterface;
+use ROrier\Config\Tools\EnvTool;
 
 class EnvParser implements ParserInterface
 {
@@ -29,8 +30,8 @@ class EnvParser implements ParserInterface
 
         $key = $matches['key'];
 
-        if (isset($_ENV[$key])) {
-            $value = $_ENV[$key];
+        if (EnvTool::hasVar($key)) {
+            $value = EnvTool::getVar($key);
         } else {
             throw new ParsingEnvException("Target env var '$key' is not defined.");
         }

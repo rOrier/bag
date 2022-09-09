@@ -103,7 +103,8 @@ class Bag implements ArrayAccess
 
             foreach ($data as $key => $val) {
                 if (is_string($val) && preg_match(self::REGEX_SYMLINK, $val, $matches)) {
-                    $extracted[$key] = $this->expand($this->searchData($matches['key']));
+                    $tmp = $this->searchData($matches['key']);
+                    $extracted[$key] = $this->expand($tmp);
                 } elseif (is_array($val)) {
                     $extracted[$key] = $this->expand($val);
                 } else {

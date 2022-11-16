@@ -67,7 +67,7 @@ class Bag implements ArrayAccess
             $data =& $this->data;
         }
 
-        if ($key === false) {
+        if (!$key) {
             return $data;
         }
 
@@ -78,16 +78,13 @@ class Bag implements ArrayAccess
         if (is_array($data) and isset($data[$key])) {
             if ($this->isLink($data[$key])) {
                 $next = $this->getLink($data[$key]) . (!empty($next) ? $this->separator . $next : null);
-                unset($data);
-                $data =& $this->reference;
+                return $this->searchData($next, $this->reference);
             } else {
-                $data =& $data[$key];
+                return $this->searchData($next, $data[$key]);
             }
         } else {
             return null;
         }
-
-        return empty($next) ? $data : $this->searchData($next, $data);
     }
 
     private function expand($data)

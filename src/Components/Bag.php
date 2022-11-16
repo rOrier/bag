@@ -76,8 +76,8 @@ class Bag implements ArrayAccess
         $next = implode($this->separator, $path);
 
         if (is_array($data) and isset($data[$key])) {
-            if (is_string($data[$key]) && preg_match(self::REGEX_SYMLINK, $data[$key], $matches)) {
-                $next = $matches['key'] . (!empty($next) ? $this->separator . $next : null);
+            if ($this->isLink($data[$key])) {
+                $next = $this->getLink($data[$key]) . (!empty($next) ? $this->separator . $next : null);
                 unset($data);
                 $data =& $this->reference;
             } else {
@@ -102,8 +102,9 @@ class Bag implements ArrayAccess
             $extracted = [];
 
             foreach ($data as $key => $val) {
-                if (is_string($val) && preg_match(self::REGEX_SYMLINK, $val, $matches)) {
-                    $tmp = $this->searchData($matches['key']);
+                if ($this->isLink($val)) {
+                    $link = $this->getLink($val);
+                    $tmp = $this->searchData($link);
                     $extracted[$key] = $this->expand($tmp);
                 } elseif (is_array($val)) {
                     $extracted[$key] = $this->expand($val);
@@ -116,6 +117,22 @@ class Bag implements ArrayAccess
         }
 
         return $extracted;
+    }
+
+    protected function isLink($val)
+    {
+        return (is_string($val) && preg_match(self::REGEX_SYMLINK, $val));
+    }
+
+    protected function getLink($val)
+    {
+        if (!$this->isLink($val)) {
+            throw new Exception("'$val' is not a valid link.");
+        }
+
+        preg_match(self::REGEX_SYMLINK, $val, $matches);
+
+        return $matches['key'];
     }
 
     // ###################################################################

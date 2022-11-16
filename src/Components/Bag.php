@@ -92,8 +92,6 @@ class Bag implements ArrayAccess
 
     private function expand($data)
     {
-        $extracted = null;
-
         if (is_array($data)) {
             $extracted = [];
 

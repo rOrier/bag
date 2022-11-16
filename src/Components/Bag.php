@@ -95,7 +95,7 @@ class Bag implements ArrayAccess
             foreach ($data as $key => $val) {
                 if ($this->isLink($val)) {
                     $link = $this->getLink($val);
-                    $data = $this->searchData($link);
+                    $data = $this->searchData($link, $this->reference);
                     $extracted[$key] = $this->expand($data);
                 } elseif (is_array($val)) {
                     $extracted[$key] = $this->expand($val);

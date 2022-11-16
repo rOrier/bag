@@ -13,16 +13,13 @@ class Bag implements ArrayAccess
 {
     const REGEX_SYMLINK = '/^=(?<key>[a-z-A-Z0-9_-]+(\.[a-z-A-Z0-9_-]*)*)$/';
 
-    private array $data = array();
-
-    private array $reference = array();
+    private array $data;
 
     private ?string $separator = '.';
 
-    public function __construct(array $data = array(), ?array $reference = null)
+    public function __construct(array $data = array())
     {
         $this->data = $data;
-        $this->reference = $reference ?? $data;
     }
 
     /**
@@ -35,7 +32,7 @@ class Bag implements ArrayAccess
 
     public function toArray() : array
     {
-        return $this->expand();
+        return $this->expand($this->data);
     }
 
     /**
@@ -44,16 +41,16 @@ class Bag implements ArrayAccess
      */
     public function copy($var = false)
     {
-        $data = $this->searchData($var);
+        $data = $this->searchData($var, $this->data);
 
-        return is_array($data) ? new self($data, $this->reference) : $data;
+        return is_array($data) ? new self($this->expand($data)) : $data;
     }
 
     public function extract($var = false)
     {
-        $data = $this->searchData($var);
+        $data = $this->searchData($var, $this->data);
 
-        return !empty($data) ? $this->expand($data) : null;
+        return $this->expand($data);
     }
 
     public function merge(array $data)
@@ -61,13 +58,9 @@ class Bag implements ArrayAccess
         CollectionTool::merge($this->data, $data);
     }
 
-    private function searchData($key = false, &$data = false)
+    private function searchData($key, &$data)
     {
-        if (!$data) {
-            $data =& $this->data;
-        }
-
-        if ($key === false) {
+        if (!$key) {
             return $data;
         }
 
@@ -75,36 +68,33 @@ class Bag implements ArrayAccess
         $key = array_shift($path);
         $next = implode($this->separator, $path);
 
-        if (is_array($data) and isset($data[$key])) {
-            if (is_string($data[$key]) && preg_match(self::REGEX_SYMLINK, $data[$key], $matches)) {
-                $next = $matches['key'] . (!empty($next) ? $this->separator . $next : null);
-                unset($data);
-                $data =& $this->reference;
+        if (is_array($data) and array_key_exists($key, $data)) {
+            if ($this->isLink($data[$key])) {
+                $next = implode($this->separator, array(
+                    $this->getLink($data[$key]),
+                    $next
+                ));
+                $result = $this->searchData($next, $this->data);
             } else {
-                $data =& $data[$key];
+                $result = $this->searchData($next, $data[$key]);
             }
         } else {
-            return null;
+            $result = null;
         }
 
-        return empty($next) ? $data : $this->searchData($next, $data);
+        return $result;
     }
 
-    private function expand(&$data = false)
+    private function expand($data)
     {
-        $extracted = null;
-
-        if (!$data) {
-            $data =& $this->data;
-        }
-
         if (is_array($data)) {
             $extracted = [];
 
             foreach ($data as $key => $val) {
-                if (is_string($val) && preg_match(self::REGEX_SYMLINK, $val, $matches)) {
-                    $tmp = $this->searchData($matches['key']);
-                    $extracted[$key] = $this->expand($tmp);
+                if ($this->isLink($val)) {
+                    $link = $this->getLink($val);
+                    $data = $this->searchData($link, $this->data);
+                    $extracted[$key] = $this->expand($data);
                 } elseif (is_array($val)) {
                     $extracted[$key] = $this->expand($val);
                 } else {
@@ -116,6 +106,22 @@ class Bag implements ArrayAccess
         }
 
         return $extracted;
+    }
+
+    protected function isLink($val)
+    {
+        return (is_string($val) && preg_match(self::REGEX_SYMLINK, $val));
+    }
+
+    protected function getLink($val)
+    {
+        if (!$this->isLink($val)) {
+            throw new Exception("'$val' is not a valid link.");
+        }
+
+        preg_match(self::REGEX_SYMLINK, $val, $matches);
+
+        return $matches['key'];
     }
 
     // ###################################################################
@@ -138,7 +144,7 @@ class Bag implements ArrayAccess
      */
     public function offsetExists($var)
     {
-        return ($this->searchData($var) !== null);
+        return ($this->searchData($var, $this->data) !== null);
     }
 
     /**

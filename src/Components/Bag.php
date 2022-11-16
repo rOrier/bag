@@ -13,9 +13,9 @@ class Bag implements ArrayAccess
 {
     const REGEX_SYMLINK = '/^=(?<key>[a-z-A-Z0-9_-]+(\.[a-z-A-Z0-9_-]*)*)$/';
 
-    private array $data = array();
+    private array $data;
 
-    private array $reference = array();
+    private array $reference;
 
     private ?string $separator = '.';
 

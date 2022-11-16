@@ -15,14 +15,11 @@ class Bag implements ArrayAccess
 
     private array $data;
 
-    private array $reference;
-
     private ?string $separator = '.';
 
-    public function __construct(array $data = array(), ?array $reference = null)
+    public function __construct(array $data = array())
     {
         $this->data = $data;
-        $this->reference = $reference ?? $data;
     }
 
     /**
@@ -46,7 +43,7 @@ class Bag implements ArrayAccess
     {
         $data = $this->searchData($var);
 
-        return is_array($data) ? new self($data, $this->reference) : $data;
+        return is_array($data) ? new self($this->expand($data)) : $data;
     }
 
     public function extract($var = false)
@@ -78,7 +75,7 @@ class Bag implements ArrayAccess
         if (is_array($data) and isset($data[$key])) {
             if ($this->isLink($data[$key])) {
                 $next = $this->getLink($data[$key]) . (!empty($next) ? $this->separator . $next : null);
-                return $this->searchData($next, $this->reference);
+                return $this->searchData($next, $this->data);
             } else {
                 return $this->searchData($next, $data[$key]);
             }
@@ -95,7 +92,7 @@ class Bag implements ArrayAccess
             foreach ($data as $key => $val) {
                 if ($this->isLink($val)) {
                     $link = $this->getLink($val);
-                    $data = $this->searchData($link, $this->reference);
+                    $data = $this->searchData($link, $this->data);
                     $extracted[$key] = $this->expand($data);
                 } elseif (is_array($val)) {
                     $extracted[$key] = $this->expand($val);

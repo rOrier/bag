@@ -134,4 +134,18 @@ class BagTest extends TestCase
         $this->assertEquals('sub-value-1', $copy['link-2.sub-key-1'], "copy['link-2.sub-key-1'] must be equals to 'sub-value-1'.");
         $this->assertEquals('sub-value-1', $copy->toArray()['link-2']['sub-key-1'], "copy->toArray()[link-2]['sub-key-1'] must be equals to 'sub-value-1'.");
     }
+
+    public function testBasicData()
+    {
+        $bag = new Bag(array(
+            'false' => false,
+            'true' => true,
+            'null' => null
+        ));
+
+        $this->assertTrue($bag['true'], "bag['true'] must be true.");
+        $this->assertFalse($bag['false'], "bag['false'] must be false.");
+        $this->assertNull($bag['null'], "bag['null'] must be null.");
+        $this->assertNull($bag['notfound'], "bag['notfound'] must be null.");
+    }
 }

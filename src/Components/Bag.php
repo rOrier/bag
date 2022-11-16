@@ -41,14 +41,14 @@ class Bag implements ArrayAccess
      */
     public function copy($var = false)
     {
-        $data = $this->searchData($var);
+        $data = $this->searchData($var, $this->data);
 
         return is_array($data) ? new self($this->expand($data)) : $data;
     }
 
     public function extract($var = false)
     {
-        $data = $this->searchData($var);
+        $data = $this->searchData($var, $this->data);
 
         return !empty($data) ? $this->expand($data) : null;
     }
@@ -58,12 +58,8 @@ class Bag implements ArrayAccess
         CollectionTool::merge($this->data, $data);
     }
 
-    private function searchData($key = false, &$data = false)
+    private function searchData($key, &$data)
     {
-        if (!$data) {
-            $data =& $this->data;
-        }
-
         if (!$key) {
             return $data;
         }
@@ -143,7 +139,7 @@ class Bag implements ArrayAccess
      */
     public function offsetExists($var)
     {
-        return ($this->searchData($var) !== null);
+        return ($this->searchData($var, $this->data) !== null);
     }
 
     /**

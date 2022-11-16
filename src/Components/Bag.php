@@ -50,7 +50,7 @@ class Bag implements ArrayAccess
     {
         $data = $this->searchData($var, $this->data);
 
-        return !empty($data) ? $this->expand($data) : null;
+        return $this->expand($data);
     }
 
     public function merge(array $data)
@@ -68,7 +68,7 @@ class Bag implements ArrayAccess
         $key = array_shift($path);
         $next = implode($this->separator, $path);
 
-        if (is_array($data) and isset($data[$key])) {
+        if (is_array($data) and array_key_exists($key, $data)) {
             if ($this->isLink($data[$key])) {
                 $next = $this->getLink($data[$key]) . (!empty($next) ? $this->separator . $next : null);
                 return $this->searchData($next, $this->data);

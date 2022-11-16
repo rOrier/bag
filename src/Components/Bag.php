@@ -35,7 +35,7 @@ class Bag implements ArrayAccess
 
     public function toArray() : array
     {
-        return $this->expand();
+        return $this->expand($this->data);
     }
 
     /**
@@ -90,13 +90,9 @@ class Bag implements ArrayAccess
         return empty($next) ? $data : $this->searchData($next, $data);
     }
 
-    private function expand($data = false)
+    private function expand($data)
     {
         $extracted = null;
-
-        if (!$data) {
-            $data = $this->data;
-        }
 
         if (is_array($data)) {
             $extracted = [];

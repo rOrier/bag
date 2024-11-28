@@ -82,6 +82,7 @@ class ParametersProxy implements ParametersInterface
      * @inheritDoc
      * @throws ParametersException
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($var, $value)
     {
         $parameters = $this->getParameters();
@@ -93,6 +94,7 @@ class ParametersProxy implements ParametersInterface
      * @inheritDoc
      * @throws ParametersException
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($var)
     {
         return $this->has($var);
@@ -102,6 +104,7 @@ class ParametersProxy implements ParametersInterface
      * @inheritDoc
      * @throws ParametersException
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($var)
     {
         $parameters = $this->getParameters();
@@ -113,6 +116,7 @@ class ParametersProxy implements ParametersInterface
      * @inheritDoc
      * @throws ParametersException
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($var)
     {
         return $this->get($var);

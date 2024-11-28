@@ -86,6 +86,7 @@ class Parameters implements ParametersInterface
      * @inheritDoc
      * @throws ParametersException
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         throw new ParametersException("Parameters are read-only.");
@@ -94,6 +95,7 @@ class Parameters implements ParametersInterface
     /**
      * @inheritDoc
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return $this->has($offset);
@@ -103,6 +105,7 @@ class Parameters implements ParametersInterface
      * @inheritDoc
      * @throws ParametersException
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         throw new ParametersException("Parameters are read-only.");
@@ -112,6 +115,7 @@ class Parameters implements ParametersInterface
      * @inheritDoc
      * @throws ParametersException
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->get($offset);

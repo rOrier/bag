@@ -133,6 +133,7 @@ class Bag implements ArrayAccess
      * @param mixed $value
      * @throws Exception
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($var, $value)
     {
         throw new Exception("Write access forbidden.");
@@ -142,6 +143,7 @@ class Bag implements ArrayAccess
      * @param mixed $var
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($var)
     {
         return ($this->searchData($var, $this->data) !== null);
@@ -151,6 +153,7 @@ class Bag implements ArrayAccess
      * @param mixed $var
      * @throws Exception
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($var)
     {
         throw new Exception("Write access forbidden.");
@@ -160,6 +163,7 @@ class Bag implements ArrayAccess
      * @param mixed $var
      * @return array|bool|mixed|null
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($var)
     {
         return $this->extract($var);
